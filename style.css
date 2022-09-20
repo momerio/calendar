@@ -1,14 +1,41 @@
+body {
+    font-size: x-large;
+}
+
 .center {
     text-align: center;
 }
 
+/* 祝日 */
+.holiday {
+    color: red;
+}
+
+td:first-child {
+    color: red;
+}
+
+td:last-child {
+    color: blue;
+}
+
+td.disabled {
+    color: #ccc;
+}
+
+td.today {
+    background-color: #adab1c;
+    color: #fff;
+}
+
 footer {
     font: #000000;
+    font-size: medium;
     text-align: center;
 
     position: absolute;
     bottom: 0;
-    top: 95%;
+    top: calc(100vh-2rem);
     left: 50%;
     transform: translateX(-50%);
     -webkit-transform: translateX(-50%);

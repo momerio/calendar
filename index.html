@@ -7,16 +7,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Calendar</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.rawgit.com/osamutake/japanese-holidays-js/v1.0.10/lib/japanese-holidays.min.js"></script>
 </head>
 
 <body>
     <h1 class="center">SIMPLE CALENDAR</h1>
+
+    <h2 id="header" style="text-align: center;"></h2>
+    <div id="calendar"> </div>
+
+    <h2 id="header2" style="text-align: center;"></h2>
+    <div id="calendar2"> </div>
 
     <footer>
         <a href="https://momdev.tech/" target="_blank" rel="noopener noreferrer">開発チーム MoM</a><br>
         (c) 2021-
         <script>document.write(new Date().getFullYear());</script> MoM.
     </footer>
+
+
+    <script>
+
+        // 参考にさせていただきました:https://nyanblog2222.com/programming/javascript/2749/
+
+        const week = ["日", "月", "火", "水", "木", "金", "土"];
+        const today = new Date();
+        var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
+
+        window.onload = function () {
+            showProcess(today);
+        };
+
+        function showProcess(date) {
+            // create the year and month field
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            thisDate = year + "年 " + (month + 1) + "月";
+            document.getElementById("header").textContent = thisDate;
+
+
+            // create a calendar field
+            var calendar = createCalendarHtml(year, month);
+            document.querySelector('#calendar').innerHTML = calendar;
+
+            if (month === 11) {
+                thisDate = (year + 1) + "年 " + 1 + "月";
+                var calendar = createCalendarHtml(year + 1, 0);
+            } else {
+                thisDate = year + "年 " + (month + 2) + "月";
+                var calendar = createCalendarHtml(year, month + 1);
+            }
+            document.getElementById("header2").textContent = thisDate;
+            document.querySelector('#calendar2').innerHTML = calendar;
+
+        }
+
+        // カレンダー作成
+        function createCalendarHtml(year, month) {
+            // 曜日
+            var calendar = "<table style='margin: 0 auto;'><tr class='dayOfWeek'>";
+            for (var i = 0; i < week.length; i++) {
+                calendar += "<th>" + week[i] + "</th>";
+            }
+            calendar += "</tr>";
+
+            var count = 0;
+            var startDayOfWeek = new Date(year, month, 1).getDay();
+            var endDate = new Date(year, month + 1, 0).getDate();
+            var lastMonthEndDate = new Date(year, month, 0).getDate();
+            var row = Math.ceil((startDayOfWeek + endDate) / week.length);
+
+            for (var i = 0; i < row; i++) {
+                calendar += "<tr>";
+                for (var j = 0; j < week.length; j++) {
+                    if (i == 0 && j < startDayOfWeek) {
+                        calendar += "<td class='disabled'>" + (lastMonthEndDate - startDayOfWeek + j + 1) + "</td>";
+                    } else if (count >= endDate) {
+                        count++;
+                        calendar += "<td class='disabled'>" + (count - endDate) + "</td>";
+                    } else {
+                        count++;
+                        if (year == today.getFullYear()
+                            && month == (today.getMonth())
+                            && count == today.getDate()) {
+                            if (JapaneseHolidays.isHoliday(today))
+                                calendar += "<td class='today holiday'>" + count + "</td>";
+                            else
+                                calendar += "<td class='today'>" + count + "</td>";
+                        } else {
+                            var nowDay = new Date(year, month, count);
+                            if (JapaneseHolidays.isHoliday(nowDay))
+                                calendar += "<td class='holiday'>" + count + "</td>";
+                            else
+                                calendar += "<td>" + count + "</td>";
+                        }
+                    }
+                }
+                calendar += "</tr>";
+            }
+            return calendar;
+        }
+
+
+    </script>
 </body>
 
 </html>
