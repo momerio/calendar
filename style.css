@@ -1,0 +1,18 @@
+.center {
+    text-align: center;
+}
+
+footer {
+    font: #000000;
+    text-align: center;
+
+    position: absolute;
+    bottom: 0;
+    top: 95%;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+
+    /* margin-top: 30px; */
+}
